@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { itemsActions } from "../store/itemsSlice";
 import { fetchStatusActions } from "../store/fetchStatusSlice";
+import axios from 'axios';
 
 const FetchItems = () => {
   const fetchStatus = useSelector((store) => store.fetchStatus);
@@ -15,20 +16,41 @@ const FetchItems = () => {
 
     dispatch(fetchStatusActions.markFetchingStarted());
 
-    fetch("http://localhost:8080/items", { signal })
-      .then((res) => res.json())
-      .then( (items) => {
+    // fetch("http://localhost:8080/api/items", { signal })
+    //   .then((res) => res.json())
+    //   .then( (items) => {
+    //     dispatch(fetchStatusActions.markFetchDone());
+    //     dispatch(fetchStatusActions.markFetchingFinished());
+    //     dispatch(itemsActions.addInitialItems(items.items[0]));
+    //     // console.log(items);
+    //     // console.log(items.items);
+    //     // console.log(items.items[0]);
+    //   });
+
+    // axios.get("http://localhost:8080/api/items")
+    // .then( (items) => {
+    //     dispatch(fetchStatusActions.markFetchDone());
+    //     dispatch(fetchStatusActions.markFetchingFinished());
+    //     dispatch(itemsActions.addInitialItems(items.data.items[0]));
+    //     // console.log(items);
+    //     // console.log(items.data);
+    //     // console.log(items.data.items[0]);
+    // })
+
+    axios.get("/api/items")
+    .then( (items) => {
         dispatch(fetchStatusActions.markFetchDone());
         dispatch(fetchStatusActions.markFetchingFinished());
-        dispatch(itemsActions.addInitialItems(items.items[0]));
+        dispatch(itemsActions.addInitialItems(items.data.items[0]));
         // console.log(items);
-        // console.log(items.items);
-        // console.log(items.items[0]);
-      });
+        // console.log(items.data);
+        // console.log(items.data.items[0]);
+    })
 
-    return () => {
-      controller.abort();
-    };
+    //ye fetch method ke sath chlegi
+    // return () => {
+    //   controller.abort();
+    // };
   }, [fetchStatus]);
 
   return <></>;
