@@ -5,6 +5,8 @@ import { fetchStatusActions } from "../store/fetchStatusSlice";
 import axios from 'axios';
 
 const FetchItems = () => {
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
   const fetchStatus = useSelector((store) => store.fetchStatus);
   const dispatch = useDispatch();
 
@@ -37,7 +39,7 @@ const FetchItems = () => {
     //     // console.log(items.data.items[0]);
     // })
 
-    axios.get("/api/items")
+    axios.get(`${BASE_URL}/api/items`)
     .then( (items) => {
         dispatch(fetchStatusActions.markFetchDone());
         dispatch(fetchStatusActions.markFetchingFinished());
